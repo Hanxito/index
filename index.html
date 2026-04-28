@@ -2,121 +2,215 @@
 <html lang="es">
 <head>
 <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Ahorcado YachayTECH</title>
 
 <style>
-body {
-    margin: 0;
-    font-family: 'Segoe UI', sans-serif;
-    color: white;
-    text-align: center;
-}
+    body {
+        margin: 0;
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        color: white;
+        text-align: center;
+        background-color: #121212; /* Fondo de respaldo */
+        overflow-x: hidden;
+    }
 
-/* PORTADA */
-#portada {
-    position: fixed;
-    width: 100%;
-    height:100%;
-    background: url("yachayfondo.jpg") no-repeat center center;
-    background-size: cover;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    z-index: 10;
-}
+    /* PORTADA */
+    #portada {
+        position: fixed;
+        width: 100%;
+        height: 100%;
+        /* Fondo de respaldo por si no carga la imagen */
+        background: url("yachayfondo.jpg") no-repeat center center, linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+        background-size: cover;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        z-index: 10;
+    }
 
-#portada::before {
-    content: "";
-    position: absolute;
-    width: 100%;
-    height: 100%;
-    background: rgba(0,0,0,0.7);
-}
+    #portada::before {
+        content: "";
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.7);
+    }
 
-.titulo {
-    font-size: 3em;
-    z-index: 2;
-    animation: glow 2s infinite alternate;
-}
+    .titulo {
+        font-size: clamp(2em, 5vw, 3em);
+        z-index: 2;
+        animation: glow 2s infinite alternate;
+        margin-bottom: 10px;
+    }
 
-.subtitulo {
-    z-index: 2;
-}
+    .subtitulo {
+        z-index: 2;
+        font-size: 1.2em;
+        margin-bottom: 30px;
+        color: #ddd;
+    }
 
-#btnStart {
-    z-index: 2;
-    padding: 15px 30px;
-    font-size: 18px;
-    background: #00c6ff;
-    border-radius: 10px;
-    transition: 0.3s;
-    cursor: pointer;
-}
+    #btnStart {
+        z-index: 2;
+        padding: 15px 40px;
+        font-size: 20px;
+        font-weight: bold;
+        background: linear-gradient(45deg, #00c6ff, #0072ff);
+        color: white;
+        border: none;
+        border-radius: 25px;
+        box-shadow: 0 4px 15px rgba(0, 198, 255, 0.4);
+        transition: 0.3s;
+        cursor: pointer;
+    }
 
-#btnStart:hover {
-    transform: scale(1.2);
-    background: #00ffcc;
-}
+    #btnStart:hover {
+        transform: scale(1.1);
+        box-shadow: 0 6px 20px rgba(0, 198, 255, 0.6);
+    }
 
-@keyframes glow {
-    from { text-shadow: 0 0 10px #00c6ff; }
-    to { text-shadow: 0 0 25px #00ffcc; }
-}
+    @keyframes glow {
+        from { text-shadow: 0 0 10px #00c6ff; }
+        to { text-shadow: 0 0 25px #00ffcc; }
+    }
 
-/* MENU */
-#menu {
-    display: none;
-    flex-wrap: wrap;
-    justify-content: center;
-    margin-top: 50px;
-}
+    /* MENU Y JUEGO CONTENEDORES (Glassmorphism) */
+    .container {
+        position: relative;
+        z-index: 2;
+        max-width: 800px;
+        margin: 20px auto;
+        padding: 20px;
+        background: rgba(255, 255, 255, 0.05);
+        backdrop-filter: blur(10px);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        border-radius: 20px;
+    }
 
-.card {
-    background: rgba(255,255,255,0.1);
-    padding: 20px;
-    margin: 10px;
-    border-radius: 15px;
-    cursor: pointer;
-    transition: 0.3s;
-    width: 150px;
-}
+    /* MENU */
+    #menu {
+        display: none;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 15px;
+    }
 
-.card:hover {
-    transform: scale(1.1);
-    background: rgba(255,255,255,0.3);
-}
+    .card {
+        background: rgba(255, 255, 255, 0.1);
+        padding: 25px 20px;
+        border-radius: 15px;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        width: 140px;
+        font-weight: bold;
+        font-size: 1.1em;
+        border: 1px solid rgba(255, 255, 255, 0.05);
+    }
 
-/* GAME */
-#game {
-    display: none;
-    margin-top: 20px;
-}
+    .card:hover {
+        transform: translateY(-5px);
+        background: rgba(255, 255, 255, 0.2);
+        box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+        border-color: #00c6ff;
+    }
 
-#palabra {
-    font-size: 35px;
-    letter-spacing: 8px;
-    margin: 20px;
-}
+    /* GAME */
+    #game {
+        display: none;
+    }
 
-button {
-    padding: 10px;
-    border-radius: 8px;
-    margin: 5px;
-    cursor: pointer;
-}
+    #categoria {
+        color: #00c6ff;
+        margin-top: 0;
+    }
 
-#letras button {
-    width: 35px;
-}
+    canvas {
+        background: rgba(0, 0, 0, 0.2);
+        border-radius: 10px;
+        margin: 10px 0;
+    }
 
-/* PARTÍCULAS */
-#particles-js {
-    position: fixed;
-    width: 100%;
-    height: 100%;
-    z-index: -1;
-}
+    #palabra {
+        font-size: clamp(24px, 4vw, 35px);
+        letter-spacing: 8px;
+        margin: 20px;
+        font-family: monospace;
+        text-transform: uppercase;
+    }
+
+    #info {
+        font-size: 1.1em;
+        margin-bottom: 20px;
+        color: #ccc;
+    }
+
+    .btn-accion {
+        padding: 10px 20px;
+        border-radius: 8px;
+        border: none;
+        margin: 5px;
+        cursor: pointer;
+        font-weight: bold;
+        transition: 0.2s;
+    }
+
+    .btn-pista { background: #ffcc00; color: #333; }
+    .btn-volver { background: #ff4b4b; color: white; }
+    .btn-accion:hover { opacity: 0.8; transform: scale(1.05); }
+
+    #letras {
+        margin-top: 20px;
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 5px;
+        max-width: 500px;
+        margin-left: auto;
+        margin-right: auto;
+    }
+
+    #letras button {
+        width: 40px;
+        height: 40px;
+        font-size: 16px;
+        font-weight: bold;
+        background: rgba(255, 255, 255, 0.2);
+        color: white;
+        border: 1px solid rgba(255, 255, 255, 0.3);
+        border-radius: 8px;
+        cursor: pointer;
+        transition: 0.2s;
+    }
+
+    #letras button:hover:not(:disabled) {
+        background: #00c6ff;
+        color: black;
+    }
+
+    #letras button:disabled {
+        background: rgba(255, 255, 255, 0.05);
+        color: rgba(255, 255, 255, 0.3);
+        cursor: not-allowed;
+        border-color: transparent;
+    }
+
+    /* PARTÍCULAS */
+    #particles-js {
+        position: fixed;
+        width: 100%;
+        height: 100%;
+        top: 0;
+        left: 0;
+        z-index: 0;
+        background-color: #0b132b;
+    }
+
+    h1 {
+        position: relative;
+        z-index: 2;
+    }
 </style>
 </head>
 
@@ -124,30 +218,28 @@ button {
 
 <div id="particles-js"></div>
 
-<!-- PORTADA -->
 <div id="portada">
     <h1 class="titulo">🎓 Ahorcado YachayTECH</h1>
-    <p class="subtitulo">Pon a prueba tu conocimiento</p>
+    <p class="subtitulo">Pon a prueba tu conocimiento científico</p>
     <button id="btnStart" onclick="entrarJuego()">🚀 Comenzar</button>
 </div>
 
-<h1>🎓 Ahorcado YachayTECH</h1>
+<h1 style="display: none;" id="tituloPrincipal">🎓 Ahorcado YachayTECH</h1>
 
-<div id="menu"></div>
+<div class="container" id="menu"></div>
 
-<div id="game">
+<div class="container" id="game">
     <h2 id="categoria"></h2>
     <canvas id="canvas" width="220" height="260"></canvas>
     <div id="palabra"></div>
     <div id="info"></div>
 
-    <button onclick="darPista()">💡 Pista</button>
-    <button onclick="volverMenu()">⬅ Volver</button>
+    <button class="btn-accion btn-pista" onclick="darPista()">💡 Pista (-15 pts)</button>
+    <button class="btn-accion btn-volver" onclick="volverMenu()">⬅ Volver</button>
 
     <div id="letras"></div>
 </div>
 
-<!-- SONIDO -->
 <audio id="winSound" src="https://www.soundjay.com/misc/sounds/bell-ringing-05.mp3"></audio>
 <audio id="goodSound" src="https://www.soundjay.com/buttons/sounds/button-3.mp3"></audio>
 <audio id="badSound" src="https://www.soundjay.com/buttons/sounds/button-10.mp3"></audio>
@@ -174,6 +266,7 @@ let categoriaActual = "";
 // PORTADA
 function entrarJuego() {
     document.getElementById("portada").style.display = "none";
+    document.getElementById("tituloPrincipal").style.display = "block";
     document.getElementById("menu").style.display = "flex";
 }
 
@@ -199,21 +292,25 @@ function iniciarJuego(cat) {
     document.getElementById("menu").style.display = "none";
     document.getElementById("game").style.display = "block";
 
-    document.getElementById("categoria").innerText = cat;
+    document.getElementById("categoria").innerText = "Categoría: " + cat;
     crearTeclado();
     actualizar();
 }
 
-// DIFICULTAD
+// DIFICULTAD (Mejorado para evitar errores si no hay palabras largas)
 function elegirPalabra(lista) {
-    if (nivel <= 2) lista = lista.filter(p => p.length <= 6);
-    else if (nivel <= 4) lista = lista.filter(p => p.length <= 9);
-    else lista = lista.filter(p => p.length >= 9);
+    let filtrada = [];
+    if (nivel <= 2) filtrada = lista.filter(p => p.length <= 6);
+    else if (nivel <= 4) filtrada = lista.filter(p => p.length <= 9);
+    else filtrada = lista.filter(p => p.length >= 9);
 
-    return lista[Math.floor(Math.random() * lista.length)];
+    // Respaldo por si el filtro se queda vacío
+    if (filtrada.length === 0) filtrada = lista; 
+
+    return filtrada[Math.floor(Math.random() * filtrada.length)];
 }
 
-// TECLADO
+// TECLADO PANTALLA
 function crearTeclado() {
     const cont = document.getElementById("letras");
     cont.innerHTML = "";
@@ -222,6 +319,7 @@ function crearTeclado() {
         let l = String.fromCharCode(i);
         let b = document.createElement("button");
         b.innerText = l;
+        b.id = "btn-" + l; // ID para vincular con teclado físico
 
         b.onclick = () => {
             b.disabled = true;
@@ -232,14 +330,32 @@ function crearTeclado() {
     }
 }
 
+// TECLADO FÍSICO
+document.addEventListener('keydown', (e) => {
+    // Solo escuchar si el juego está activo
+    if (document.getElementById("game").style.display === "block") {
+        let tecla = e.key.toLowerCase();
+        // Verificar que sea una letra
+        if (tecla >= 'a' && tecla <= 'z') {
+            let btn = document.getElementById("btn-" + tecla);
+            if (btn && !btn.disabled) {
+                btn.disabled = true;
+                intentar(tecla);
+            }
+        }
+    }
+});
+
 // INTENTOS
 function intentar(l) {
     letras.push(l);
 
     if (!palabra.includes(l)) {
         intentos--;
+        document.getElementById("badSound").currentTime = 0;
         document.getElementById("badSound").play();
     } else {
+        document.getElementById("goodSound").currentTime = 0;
         document.getElementById("goodSound").play();
     }
 
@@ -265,26 +381,37 @@ function comprobar() {
         puntaje += palabra.length * 10;
         nivel++;
         setTimeout(() => {
-            alert("🎉 Ganaste!");
+            alert("🎉 ¡Ganaste!\nPuntaje actual: " + puntaje);
             iniciarJuego(categoriaActual);
         }, 300);
     }
 
     if (intentos === 0) {
         setTimeout(() => {
-            alert("💀 Perdiste: " + palabra);
+            alert("💀 Perdiste. La palabra era: " + palabra.toUpperCase());
+            nivel = 1; // Reiniciar nivel al perder
+            puntaje = 0; // Reiniciar puntaje al perder
             volverMenu();
         }, 300);
     }
 }
 
-// PISTA
+// PISTA (Añadida penalización e integración con botones)
 function darPista() {
-    for (let l of palabra) {
-        if (!letras.includes(l)) {
-            letras.push(l);
-            actualizar();
-            return;
+    if (puntaje >= 15 || puntaje === 0) { // Permite pista al inicio pero te puede dejar en negativo, o exige puntos
+        for (let l of palabra) {
+            if (!letras.includes(l)) {
+                letras.push(l);
+                puntaje -= 15; // Penalización por usar pista
+                
+                // Deshabilitar el botón correspondiente
+                let btn = document.getElementById("btn-" + l);
+                if(btn) btn.disabled = true;
+                
+                actualizar();
+                comprobar();
+                return;
+            }
         }
     }
 }
@@ -295,22 +422,50 @@ function volverMenu() {
     document.getElementById("menu").style.display = "flex";
 }
 
-// DIBUJO
+// DIBUJO (Mejorado color y completadas extremidades)
 function dibujar() {
     const c = document.getElementById("canvas");
     const ctx = c.getContext("2d");
     ctx.clearRect(0,0,220,260);
 
     ctx.lineWidth = 4;
+    ctx.strokeStyle = "white"; // Fundamental para que se vea en fondo oscuro
+    ctx.lineCap = "round";
 
     ctx.beginPath();
-    ctx.moveTo(20,240); ctx.lineTo(180,240);
-    if (intentos < 6) ctx.moveTo(40,240), ctx.lineTo(40,20);
-    if (intentos < 5) ctx.lineTo(120,20);
-    if (intentos < 4) ctx.lineTo(120,50);
-    if (intentos < 3) ctx.arc(120,70,20,0,Math.PI*2);
-    if (intentos < 2) ctx.moveTo(120,90), ctx.lineTo(120,150);
-    if (intentos < 1) ctx.moveTo(120,110), ctx.lineTo(90,140);
+    // Base
+    ctx.moveTo(20, 240); ctx.lineTo(180, 240);
+    
+    // Poste
+    if (intentos < 6) { 
+        ctx.moveTo(40, 240); ctx.lineTo(40, 20); 
+        ctx.lineTo(120, 20); ctx.lineTo(120, 50); 
+    }
+    
+    // Cabeza
+    if (intentos < 5) { 
+        ctx.moveTo(140, 70); // Mover al borde del círculo para no dibujar línea interna
+        ctx.arc(120, 70, 20, 0, Math.PI * 2); 
+    }
+    
+    // Cuerpo
+    if (intentos < 4) { 
+        ctx.moveTo(120, 90); ctx.lineTo(120, 160); 
+    }
+    
+    // Brazos
+    if (intentos < 3) { 
+        ctx.moveTo(120, 110); ctx.lineTo(90, 140); // Brazo Izquierdo
+        ctx.moveTo(120, 110); ctx.lineTo(150, 140); // Brazo Derecho
+    }
+    
+    // Piernas
+    if (intentos < 2) { 
+        ctx.moveTo(120, 160); ctx.lineTo(90, 200); // Pierna Izquierda
+    }
+    if (intentos < 1) { 
+        ctx.moveTo(120, 160); ctx.lineTo(150, 200); // Pierna Derecha
+    }
 
     ctx.stroke();
 }
@@ -318,11 +473,20 @@ function dibujar() {
 // PARTICULAS
 particlesJS("particles-js", {
   particles: {
-    number: { value: 60 },
-    size: { value: 3 },
-    move: { speed: 1 },
-    line_linked: { enable: true }
-  }
+    number: { value: 60, density: { enable: true, value_area: 800 } },
+    color: { value: "#ffffff" },
+    shape: { type: "circle" },
+    opacity: { value: 0.5, random: false },
+    size: { value: 3, random: true },
+    line_linked: { enable: true, distance: 150, color: "#ffffff", opacity: 0.4, width: 1 },
+    move: { enable: true, speed: 2, direction: "none", random: false, straight: false, out_mode: "out", bounce: false }
+  },
+  interactivity: {
+    detect_on: "canvas",
+    events: { onhover: { enable: true, mode: "grab" }, onclick: { enable: true, mode: "push" }, resize: true },
+    modes: { grab: { distance: 140, line_linked: { opacity: 1 } }, push: { particles_nb: 4 } }
+  },
+  retina_detect: true
 });
 
 crearMenu();
