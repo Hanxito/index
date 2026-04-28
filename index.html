@@ -11,7 +11,7 @@
         font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         color: white;
         text-align: center;
-        background-color: #121212; /* Fondo de respaldo */
+        background-color: #0b132b;
         overflow-x: hidden;
     }
 
@@ -20,9 +20,7 @@
         position: fixed;
         width: 100%;
         height: 100%;
-        /* Fondo de respaldo por si no carga la imagen */
-        background: url("yachayfondo.jpg") no-repeat center center, linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
-        background-size: cover;
+        background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
         display: flex;
         flex-direction: column;
         justify-content: center;
@@ -35,40 +33,40 @@
         position: absolute;
         width: 100%;
         height: 100%;
-        background: rgba(0, 0, 0, 0.7);
+        background: rgba(0, 0, 0, 0.6);
     }
 
     .titulo {
-        font-size: clamp(2em, 5vw, 3em);
+        font-size: clamp(2.5em, 6vw, 4em);
         z-index: 2;
         animation: glow 2s infinite alternate;
-        margin-bottom: 10px;
+        margin-bottom: 5px;
     }
 
     .subtitulo {
         z-index: 2;
         font-size: 1.2em;
         margin-bottom: 30px;
-        color: #ddd;
+        color: #00c6ff;
     }
 
     #btnStart {
         z-index: 2;
-        padding: 15px 40px;
-        font-size: 20px;
+        padding: 15px 45px;
+        font-size: 22px;
         font-weight: bold;
-        background: linear-gradient(45deg, #00c6ff, #0072ff);
-        color: white;
+        background: #00c6ff;
+        color: #0b132b;
         border: none;
-        border-radius: 25px;
-        box-shadow: 0 4px 15px rgba(0, 198, 255, 0.4);
+        border-radius: 50px;
         transition: 0.3s;
         cursor: pointer;
+        box-shadow: 0 0 20px rgba(0, 198, 255, 0.5);
     }
 
     #btnStart:hover {
         transform: scale(1.1);
-        box-shadow: 0 6px 20px rgba(0, 198, 255, 0.6);
+        background: #00ffcc;
     }
 
     @keyframes glow {
@@ -76,20 +74,20 @@
         to { text-shadow: 0 0 25px #00ffcc; }
     }
 
-    /* MENU Y JUEGO CONTENEDORES (Glassmorphism) */
+    /* CONTENEDORES */
     .container {
         position: relative;
         z-index: 2;
-        max-width: 800px;
+        max-width: 900px;
         margin: 20px auto;
         padding: 20px;
         background: rgba(255, 255, 255, 0.05);
-        backdrop-filter: blur(10px);
-        border: 1px solid rgba(255, 255, 255, 0.1);
+        backdrop-filter: blur(8px);
         border-radius: 20px;
+        border: 1px solid rgba(255, 255, 255, 0.1);
     }
 
-    /* MENU */
+    /* MENU CARDS */
     #menu {
         display: none;
         flex-wrap: wrap;
@@ -98,118 +96,81 @@
     }
 
     .card {
-        background: rgba(255, 255, 255, 0.1);
-        padding: 25px 20px;
+        background: rgba(0, 198, 255, 0.1);
+        padding: 20px;
         border-radius: 15px;
         cursor: pointer;
-        transition: all 0.3s ease;
-        width: 140px;
+        transition: 0.3s;
+        width: 160px;
+        border: 1px solid rgba(0, 198, 255, 0.2);
         font-weight: bold;
-        font-size: 1.1em;
-        border: 1px solid rgba(255, 255, 255, 0.05);
     }
 
     .card:hover {
+        background: #00c6ff;
+        color: #0b132b;
         transform: translateY(-5px);
-        background: rgba(255, 255, 255, 0.2);
-        box-shadow: 0 5px 15px rgba(0,0,0,0.3);
-        border-color: #00c6ff;
     }
 
-    /* GAME */
+    /* GAME UI */
     #game {
         display: none;
     }
 
-    #categoria {
-        color: #00c6ff;
-        margin-top: 0;
+    #palabra {
+        font-size: clamp(22px, 5vw, 40px);
+        letter-spacing: 10px;
+        margin: 25px;
+        font-family: 'Courier New', Courier, monospace;
+        color: #00ffcc;
     }
 
     canvas {
-        background: rgba(0, 0, 0, 0.2);
-        border-radius: 10px;
-        margin: 10px 0;
-    }
-
-    #palabra {
-        font-size: clamp(24px, 4vw, 35px);
-        letter-spacing: 8px;
-        margin: 20px;
-        font-family: monospace;
-        text-transform: uppercase;
-    }
-
-    #info {
-        font-size: 1.1em;
-        margin-bottom: 20px;
-        color: #ccc;
+        background: rgba(255, 255, 255, 0.05);
+        border-radius: 15px;
     }
 
     .btn-accion {
-        padding: 10px 20px;
-        border-radius: 8px;
+        padding: 12px 25px;
+        border-radius: 10px;
         border: none;
-        margin: 5px;
+        margin: 10px;
         cursor: pointer;
         font-weight: bold;
-        transition: 0.2s;
     }
 
-    .btn-pista { background: #ffcc00; color: #333; }
-    .btn-volver { background: #ff4b4b; color: white; }
-    .btn-accion:hover { opacity: 0.8; transform: scale(1.05); }
+    .btn-pista { background: #ffd700; color: #333; }
+    .btn-volver { background: #ff4d4d; color: white; }
 
     #letras {
-        margin-top: 20px;
         display: flex;
         flex-wrap: wrap;
         justify-content: center;
-        gap: 5px;
-        max-width: 500px;
-        margin-left: auto;
-        margin-right: auto;
+        gap: 8px;
+        margin-top: 20px;
     }
 
     #letras button {
-        width: 40px;
-        height: 40px;
-        font-size: 16px;
-        font-weight: bold;
-        background: rgba(255, 255, 255, 0.2);
+        width: 45px;
+        height: 45px;
+        background: rgba(255, 255, 255, 0.1);
         color: white;
-        border: 1px solid rgba(255, 255, 255, 0.3);
+        border: 1px solid rgba(255, 255, 255, 0.2);
         border-radius: 8px;
+        font-weight: bold;
         cursor: pointer;
-        transition: 0.2s;
-    }
-
-    #letras button:hover:not(:disabled) {
-        background: #00c6ff;
-        color: black;
     }
 
     #letras button:disabled {
-        background: rgba(255, 255, 255, 0.05);
-        color: rgba(255, 255, 255, 0.3);
+        opacity: 0.2;
         cursor: not-allowed;
-        border-color: transparent;
     }
 
-    /* PARTÍCULAS */
     #particles-js {
         position: fixed;
         width: 100%;
         height: 100%;
-        top: 0;
-        left: 0;
         z-index: 0;
-        background-color: #0b132b;
-    }
-
-    h1 {
-        position: relative;
-        z-index: 2;
     }
 </style>
 </head>
@@ -220,22 +181,22 @@
 
 <div id="portada">
     <h1 class="titulo">🎓 Ahorcado YachayTECH</h1>
-    <p class="subtitulo">Pon a prueba tu conocimiento científico</p>
-    <button id="btnStart" onclick="entrarJuego()">🚀 Comenzar</button>
+    <p class="subtitulo">Versión Académica Ampliada</p>
+    <button id="btnStart" onclick="entrarJuego()">🚀 COMENZAR</button>
 </div>
 
-<h1 style="display: none;" id="tituloPrincipal">🎓 Ahorcado YachayTECH</h1>
+<h1 style="margin-top: 30px; position: relative; z-index: 2;">Ahorcado YachayTECH</h1>
 
 <div class="container" id="menu"></div>
 
 <div class="container" id="game">
-    <h2 id="categoria"></h2>
+    <h2 id="categoria" style="color: #00c6ff;"></h2>
     <canvas id="canvas" width="220" height="260"></canvas>
     <div id="palabra"></div>
     <div id="info"></div>
 
     <button class="btn-accion btn-pista" onclick="darPista()">💡 Pista (-15 pts)</button>
-    <button class="btn-accion btn-volver" onclick="volverMenu()">⬅ Volver</button>
+    <button class="btn-accion btn-volver" onclick="volverMenu()">⬅ Menú</button>
 
     <div id="letras"></div>
 </div>
@@ -248,12 +209,42 @@
 
 <script>
 const data = {
-    "Física": ["energia","fuerza","onda","campo","relatividad","cuantica","vector","masa","frecuencia","inercia","entropia","gravedad"],
-    "Matemáticas": ["derivada","integral","limite","matriz","vector","ecuacion","teorema","logaritmo","serie","gradiente"],
-    "Biología": ["celula","adn","mitosis","ecosistema","enzima","organismo","evolucion","mutacion","tejido","bacteria"],
-    "Química": ["atomo","molecula","reaccion","ion","valencia","entalpia","entropia","orbital","redox","polimero"],
-    "Programación": ["python","variable","funcion","bucle","array","objeto","clase","algoritmo","debug"],
-    "Ingeniería": ["estructura","sistema","circuito","control","sensor","motor","energia","material"]
+    "Física": [
+        "energia", "fuerza", "onda", "campo", "relatividad", "cuantica", "vector", "masa", "frecuencia", "inercia",
+        "entropia", "gravedad", "foton", "electron", "proton", "neutron", "atomo", "galaxia", "mecanica", "fluido",
+        "presion", "calor", "optica", "sonido", "magnetismo", "potencia", "torque", "friccion", "impulso", "aceleracion"
+    ],
+    "Matemáticas": [
+        "derivada", "integral", "limite", "matriz", "vector", "ecuacion", "teorema", "logaritmo", "serie", "gradiente",
+        "algebra", "calculo", "geometria", "fraccion", "decimal", "angulo", "triangulo", "circulo", "poligono", "perimetro",
+        "area", "volumen", "sucesion", "conjunto", "logica", "axioma", "lema", "infinito", "asintota", "probabilidad"
+    ],
+    "Biología": [
+        "celula", "adn", "mitosis", "ecosistema", "enzima", "organismo", "evolucion", "mutacion", "tejido", "bacteria",
+        "genetica", "biodiversidad", "fotosintesis", "respiracion", "nutricion", "reproduccion", "herencia", "natural", "taxonomia", "especie",
+        "poblacion", "comunidad", "bioma", "organo", "sistema", "hormona", "proteina", "lipido", "glucido", "vitamina"
+    ],
+    "Química": [
+        "atomo", "molecula", "reaccion", "ion", "valencia", "entalpia", "entropia", "orbital", "redox", "polimero",
+        "enlace", "covalente", "ionico", "disolucion", "molaridad", "ph", "acido", "base", "oxido", "hidroxido",
+        "gas", "liquido", "solido", "plasma", "destilacion", "filtracion", "reactor", "catalizador", "isotopo", "estequiometria"
+    ],
+    "Programación": [
+        "python", "variable", "funcion", "bucle", "array", "objeto", "clase", "algoritmo", "debug", "constante",
+        "booleano", "entero", "flotante", "cadena", "lista", "tupla", "diccionario", "metodo", "herencia", "polimorfismo",
+        "abstraccion", "interfaz", "modulo", "paquete", "libreria", "framework", "consulta", "servidor", "cliente", "backend"
+    ],
+    "Agroindustria": [
+        "fermentacion", "pasteurizacion", "inocuidad", "trazabilidad", "enzima", "alimento", "nutriente", "conservacion", "envasado", "higiene",
+        "molienda", "refinacion", "extraccion", "deshidratacion", "liofilizacion", "arroz", "trigo", "maiz", "cebada", "avena", "quinua", "soja", 
+        "lenteja", "garbanzo", "frijol", "papa", "yuca", "camote", "zanahoria", "remolacha", "cebolla", "ajo", "lechuga", "espinaca", "brocoli", 
+        "coliflor", "tomate", "pepino", "pimiento", "calabaza", "sandia", "melon", "platano", "manzana", "uva" "esterilizacion"
+    ],
+    "Ingeniería": [
+        "estructura", "sistema", "circuito", "control", "sensor", "motor", "material", "diseño", "plano", "prototipo",
+        "resistencia", "industrial", "civil", "ambiental", "gestion", "calidad", "seguridad", "mantenimiento", "operacion", "proceso",
+        "optimizacion", "simulacion", "analisis", "sintesis", "evaluacion", "proyecto", "costo", "tiempo", "recurso", "eficiencia"
+    ]
 };
 
 let palabra = "";
@@ -263,16 +254,14 @@ let puntaje = 0;
 let nivel = 1;
 let categoriaActual = "";
 
-// PORTADA
 function entrarJuego() {
     document.getElementById("portada").style.display = "none";
-    document.getElementById("tituloPrincipal").style.display = "block";
     document.getElementById("menu").style.display = "flex";
 }
 
-// MENU
 function crearMenu() {
     const menu = document.getElementById("menu");
+    menu.innerHTML = "";
     for (let cat in data) {
         let card = document.createElement("div");
         card.className = "card";
@@ -282,7 +271,16 @@ function crearMenu() {
     }
 }
 
-// JUEGO
+function elegirPalabra(lista) {
+    let filtrada = [];
+    if (nivel <= 2) filtrada = lista.filter(p => p.length <= 6);
+    else if (nivel <= 5) filtrada = lista.filter(p => p.length > 6 && p.length <= 9);
+    else filtrada = lista.filter(p => p.length > 9);
+
+    if (filtrada.length === 0) filtrada = lista; 
+    return filtrada[Math.floor(Math.random() * filtrada.length)];
+}
+
 function iniciarJuego(cat) {
     categoriaActual = cat;
     palabra = elegirPalabra(data[cat]);
@@ -291,71 +289,36 @@ function iniciarJuego(cat) {
 
     document.getElementById("menu").style.display = "none";
     document.getElementById("game").style.display = "block";
+    document.getElementById("categoria").innerText = cat;
 
-    document.getElementById("categoria").innerText = "Categoría: " + cat;
     crearTeclado();
     actualizar();
 }
 
-// DIFICULTAD (Mejorado para evitar errores si no hay palabras largas)
-function elegirPalabra(lista) {
-    let filtrada = [];
-    if (nivel <= 2) filtrada = lista.filter(p => p.length <= 6);
-    else if (nivel <= 4) filtrada = lista.filter(p => p.length <= 9);
-    else filtrada = lista.filter(p => p.length >= 9);
-
-    // Respaldo por si el filtro se queda vacío
-    if (filtrada.length === 0) filtrada = lista; 
-
-    return filtrada[Math.floor(Math.random() * filtrada.length)];
-}
-
-// TECLADO PANTALLA
 function crearTeclado() {
     const cont = document.getElementById("letras");
     cont.innerHTML = "";
-
-    for (let i = 97; i <= 122; i++) {
-        let l = String.fromCharCode(i);
+    const alfabet = "abcdefghijklmnopqrstuvwxyz";
+    for (let l of alfabet) {
         let b = document.createElement("button");
         b.innerText = l;
-        b.id = "btn-" + l; // ID para vincular con teclado físico
-
+        b.id = "key-" + l;
         b.onclick = () => {
             b.disabled = true;
             intentar(l);
         };
-
         cont.appendChild(b);
     }
 }
 
-// TECLADO FÍSICO
-document.addEventListener('keydown', (e) => {
-    // Solo escuchar si el juego está activo
-    if (document.getElementById("game").style.display === "block") {
-        let tecla = e.key.toLowerCase();
-        // Verificar que sea una letra
-        if (tecla >= 'a' && tecla <= 'z') {
-            let btn = document.getElementById("btn-" + tecla);
-            if (btn && !btn.disabled) {
-                btn.disabled = true;
-                intentar(tecla);
-            }
-        }
-    }
-});
-
-// INTENTOS
 function intentar(l) {
+    if (letras.includes(l)) return;
     letras.push(l);
 
     if (!palabra.includes(l)) {
         intentos--;
-        document.getElementById("badSound").currentTime = 0;
         document.getElementById("badSound").play();
     } else {
-        document.getElementById("goodSound").currentTime = 0;
         document.getElementById("goodSound").play();
     }
 
@@ -363,130 +326,81 @@ function intentar(l) {
     comprobar();
 }
 
-// ACTUALIZAR
 function actualizar() {
-    let mostrada = palabra.split("").map(l => letras.includes(l) ? l : "_").join(" ");
-    document.getElementById("palabra").innerText = mostrada;
-
-    document.getElementById("info").innerText =
-        `Intentos: ${intentos} | Nivel: ${nivel} | Puntaje: ${puntaje}`;
-
+    let m = palabra.split("").map(l => letras.includes(l) ? l : "_").join(" ");
+    document.getElementById("palabra").innerText = m;
+    document.getElementById("info").innerHTML = `<b>Puntaje:</b> ${puntaje} | <b>Nivel:</b> ${nivel} | <b>Vidas:</b> ${intentos}`;
     dibujar();
 }
 
-// GANAR/PERDER
 function comprobar() {
     if (!document.getElementById("palabra").innerText.includes("_")) {
         document.getElementById("winSound").play();
-        puntaje += palabra.length * 10;
+        puntaje += (palabra.length * 5) + (intentos * 2);
         nivel++;
         setTimeout(() => {
-            alert("🎉 ¡Ganaste!\nPuntaje actual: " + puntaje);
+            alert("¡Excelente! Palabra completada.");
             iniciarJuego(categoriaActual);
-        }, 300);
-    }
-
-    if (intentos === 0) {
+        }, 400);
+    } else if (intentos === 0) {
         setTimeout(() => {
-            alert("💀 Perdiste. La palabra era: " + palabra.toUpperCase());
-            nivel = 1; // Reiniciar nivel al perder
-            puntaje = 0; // Reiniciar puntaje al perder
+            alert("GAME OVER. La palabra era: " + palabra.toUpperCase());
+            puntaje = 0;
+            nivel = 1;
             volverMenu();
-        }, 300);
+        }, 400);
     }
 }
 
-// PISTA (Añadida penalización e integración con botones)
 function darPista() {
-    if (puntaje >= 15 || puntaje === 0) { // Permite pista al inicio pero te puede dejar en negativo, o exige puntos
+    if (puntaje >= 15) {
         for (let l of palabra) {
             if (!letras.includes(l)) {
-                letras.push(l);
-                puntaje -= 15; // Penalización por usar pista
-                
-                // Deshabilitar el botón correspondiente
-                let btn = document.getElementById("btn-" + l);
+                puntaje -= 15;
+                let btn = document.getElementById("key-" + l);
                 if(btn) btn.disabled = true;
-                
-                actualizar();
-                comprobar();
+                intentar(l);
                 return;
             }
         }
+    } else {
+        alert("Necesitas al menos 15 puntos para una pista.");
     }
 }
 
-// VOLVER
 function volverMenu() {
     document.getElementById("game").style.display = "none";
     document.getElementById("menu").style.display = "flex";
 }
 
-// DIBUJO (Mejorado color y completadas extremidades)
 function dibujar() {
     const c = document.getElementById("canvas");
     const ctx = c.getContext("2d");
     ctx.clearRect(0,0,220,260);
-
+    ctx.strokeStyle = "white";
     ctx.lineWidth = 4;
-    ctx.strokeStyle = "white"; // Fundamental para que se vea en fondo oscuro
     ctx.lineCap = "round";
 
     ctx.beginPath();
-    // Base
-    ctx.moveTo(20, 240); ctx.lineTo(180, 240);
+    ctx.moveTo(30, 240); ctx.lineTo(190, 240); // Base
     
-    // Poste
-    if (intentos < 6) { 
-        ctx.moveTo(40, 240); ctx.lineTo(40, 20); 
-        ctx.lineTo(120, 20); ctx.lineTo(120, 50); 
-    }
-    
-    // Cabeza
-    if (intentos < 5) { 
-        ctx.moveTo(140, 70); // Mover al borde del círculo para no dibujar línea interna
-        ctx.arc(120, 70, 20, 0, Math.PI * 2); 
-    }
-    
-    // Cuerpo
-    if (intentos < 4) { 
-        ctx.moveTo(120, 90); ctx.lineTo(120, 160); 
-    }
-    
-    // Brazos
-    if (intentos < 3) { 
-        ctx.moveTo(120, 110); ctx.lineTo(90, 140); // Brazo Izquierdo
-        ctx.moveTo(120, 110); ctx.lineTo(150, 140); // Brazo Derecho
-    }
-    
-    // Piernas
-    if (intentos < 2) { 
-        ctx.moveTo(120, 160); ctx.lineTo(90, 200); // Pierna Izquierda
-    }
-    if (intentos < 1) { 
-        ctx.moveTo(120, 160); ctx.lineTo(150, 200); // Pierna Derecha
-    }
+    if (intentos < 6) { ctx.moveTo(50, 240); ctx.lineTo(50, 30); ctx.lineTo(130, 30); ctx.lineTo(130, 60); }
+    if (intentos < 5) { ctx.moveTo(150, 80); ctx.arc(130, 80, 20, 0, Math.PI*2); } // Cabeza
+    if (intentos < 4) { ctx.moveTo(130, 100); ctx.lineTo(130, 170); } // Cuerpo
+    if (intentos < 3) { ctx.moveTo(130, 120); ctx.lineTo(100, 150); } // Brazo L
+    if (intentos < 2) { ctx.moveTo(130, 120); ctx.lineTo(160, 150); } // Brazo R
+    if (intentos < 1) { ctx.moveTo(130, 170); ctx.lineTo(100, 210); ctx.moveTo(130, 170); ctx.lineTo(160, 210); } // Piernas
 
     ctx.stroke();
 }
 
-// PARTICULAS
 particlesJS("particles-js", {
   particles: {
-    number: { value: 60, density: { enable: true, value_area: 800 } },
-    color: { value: "#ffffff" },
-    shape: { type: "circle" },
-    opacity: { value: 0.5, random: false },
-    size: { value: 3, random: true },
-    line_linked: { enable: true, distance: 150, color: "#ffffff", opacity: 0.4, width: 1 },
-    move: { enable: true, speed: 2, direction: "none", random: false, straight: false, out_mode: "out", bounce: false }
-  },
-  interactivity: {
-    detect_on: "canvas",
-    events: { onhover: { enable: true, mode: "grab" }, onclick: { enable: true, mode: "push" }, resize: true },
-    modes: { grab: { distance: 140, line_linked: { opacity: 1 } }, push: { particles_nb: 4 } }
-  },
-  retina_detect: true
+    number: { value: 50 },
+    size: { value: 3 },
+    line_linked: { enable: true, opacity: 0.2 },
+    move: { speed: 1.5 }
+  }
 });
 
 crearMenu();
