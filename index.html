@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<title>Ahorcado Académico PRO</title>
+<style>
+body {
+    font-family: Arial;
+    text-align: center;
+    background: linear-gradient(135deg, #1e3c72, #2a5298);
+    color: white;
+}
+
+h1 { margin-top: 20px; }
+
+button {
+    padding: 10px;
+    margin: 5px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+}
+
+#menu button { background: #00c6ff; }
+
+#letras button {
+    width: 35px;
+    margin: 3px;
+}
+
+#palabra {
+    font-size: 30px;
+    letter-spacing: 5px;
+    margin: 20px;
+}
+
+canvas {
+    background: white;
+    margin-top: 10px;
+}
+</style>
+</head>
+
+<body>
+
+<h1>🎓 Ahorcado Académico PRO</h1>
+
+<div id="menu"></div>
+
+<div id="game" style="display:none;">
+    <h2 id="categoria"></h2>
+    <canvas id="canvas" width="200" height="250"></canvas>
+    <div id="palabra"></div>
+    <div id="info"></div>
+    <button onclick="darPista()">💡 Pista</button>
+    <div id="letras"></div>
+    <br>
+    <button onclick="volverMenu()">Volver</button>
+</div>
+
+<script>
+const data = {
+    "Física": ["energia","fuerza","onda","campo","relatividad","cuantica","vector","masa","frecuencia","inercia"],
+    "Matemáticas": ["derivada","integral","limite","matriz","vector","ecuacion","teorema","logaritmo","serie","gradiente"],
+    "Biología": ["celula","adn","mitosis","ecosistema","enzima","organismo","evolucion","mutacion","tejido","bacteria"],
+    "Química": ["atomo","molecula","reaccion","ion","valencia","entalpia","entropia","orbital","redox","polimero"]
+};
+
+let palabra = "";
+let letras = [];
+let intentos = 6;
+let puntaje = 0;
+let nivel = 1;
+let categoriaActual = "";
+
+const menu = document.getElementById("menu");
+const game = document.getElementById("game");
+
+function crearMenu() {
+    for (let cat in data) {
+        let btn = document.createElement("button");
+        btn.innerText = cat;
+        btn.onclick = () => iniciarJuego(cat);
+        menu.appendChild(btn);
+    }
+}
+
+function iniciarJuego(cat) {
+    categoriaActual = cat;
+    palabra = elegirPalabra(data[cat]);
+    letras = [];
+    intentos = 6;
+
+    menu.style.display = "none";
+    game.style.display = "block";
+
+    document.getElementById("categoria").innerText = cat;
+    crearTeclado();
+    actualizar();
+}
+
+function elegirPalabra(lista) {
+    if (nivel <= 2) lista = lista.filter(p => p.length <= 6);
+    else if (nivel <= 4) lista = lista.filter(p => p.length <= 9);
+    else lista = lista.filter(p => p.length >= 9);
+
+    return lista[Math.floor(Math.random() * lista.length)];
+}
+
+function crearTeclado() {
+    const cont = document.getElementById("letras");
+    cont.innerHTML = "";
+    for (let i = 97; i <= 122; i++) {
+        let l = String.fromCharCode(i);
+        let b = document.createElement("button");
+        b.innerText = l;
+        b.onclick = () => intentar(l, b);
+        cont.appendChild(b);
+    }
+}
+
+function intentar(l, btn) {
+    btn.disabled = true;
+    letras.push(l);
+
+    if (!palabra.includes(l)) intentos--;
+
+    actualizar();
+    comprobar();
+}
+
+function actualizar() {
+    let mostrada = palabra.split("").map(l => letras.includes(l) ? l : "_").join(" ");
+    document.getElementById("palabra").innerText = mostrada;
+    document.getElementById("info").innerText =
+        `Intentos: ${intentos} | Nivel: ${nivel} | Puntaje: ${puntaje}`;
+
+    dibujar();
+}
+
+function comprobar() {
+    if (!document.getElementById("palabra").innerText.includes("_")) {
+        puntaje += palabra.length * 10;
+        nivel++;
+        alert("🎉 Ganaste!");
+        iniciarJuego(categoriaActual);
+    }
+
+    if (intentos === 0) {
+        alert("💀 Perdiste! Era: " + palabra);
+        volverMenu();
+    }
+}
+
+function darPista() {
+    for (let l of palabra) {
+        if (!letras.includes(l)) {
+            letras.push(l);
+            actualizar();
+            return;
+        }
+    }
+}
+
+function volverMenu() {
+    game.style.display = "none";
+    menu.style.display = "block";
+}
+
+function dibujar() {
+    const c = document.getElementById("canvas");
+    const ctx = c.getContext("2d");
+    ctx.clearRect(0,0,200,250);
+
+    ctx.beginPath();
+    ctx.moveTo(10,240); ctx.lineTo(150,240);
+    if (intentos < 6) ctx.moveTo(40,240), ctx.lineTo(40,20);
+    if (intentos < 5) ctx.lineTo(100,20);
+    if (intentos < 4) ctx.lineTo(100,40);
+    if (intentos < 3) ctx.arc(100,60,20,0,Math.PI*2);
+    if (intentos < 2) ctx.moveTo(100,80), ctx.lineTo(100,140);
+    if (intentos < 1) ctx.moveTo(100,100), ctx.lineTo(80,120);
+
+    ctx.stroke();
+}
+
+crearMenu();
+</script>
+
+</body>
+</html>
