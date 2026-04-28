@@ -2,68 +2,166 @@
 <html lang="es">
 <head>
 <meta charset="UTF-8">
-<title>Ahorcado Académico PRO</title>
+<title>Ahorcado YachayTECH</title>
+
 <style>
 body {
-    font-family: Arial;
-    text-align: center;
-    background: linear-gradient(135deg, #1e3c72, #2a5298);
+    margin: 0;
+    font-family: 'Segoe UI', sans-serif;
     color: white;
+    text-align: center;
 }
 
-h1 { margin-top: 20px; }
+/* PORTADA */
+#portada {
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    background: url("fondo.jpg") no-repeat center center;
+    background-size: cover;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    z-index: 10;
+}
 
-button {
-    padding: 10px;
-    margin: 5px;
-    border: none;
-    border-radius: 8px;
+#portada::before {
+    content: "";
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,0.7);
+}
+
+.titulo {
+    font-size: 3em;
+    z-index: 2;
+    animation: glow 2s infinite alternate;
+}
+
+.subtitulo {
+    z-index: 2;
+}
+
+#btnStart {
+    z-index: 2;
+    padding: 15px 30px;
+    font-size: 18px;
+    background: #00c6ff;
+    border-radius: 10px;
+    transition: 0.3s;
     cursor: pointer;
 }
 
-#menu button { background: #00c6ff; }
+#btnStart:hover {
+    transform: scale(1.2);
+    background: #00ffcc;
+}
 
-#letras button {
-    width: 35px;
-    margin: 3px;
+@keyframes glow {
+    from { text-shadow: 0 0 10px #00c6ff; }
+    to { text-shadow: 0 0 25px #00ffcc; }
+}
+
+/* MENU */
+#menu {
+    display: none;
+    flex-wrap: wrap;
+    justify-content: center;
+    margin-top: 50px;
+}
+
+.card {
+    background: rgba(255,255,255,0.1);
+    padding: 20px;
+    margin: 10px;
+    border-radius: 15px;
+    cursor: pointer;
+    transition: 0.3s;
+    width: 150px;
+}
+
+.card:hover {
+    transform: scale(1.1);
+    background: rgba(255,255,255,0.3);
+}
+
+/* GAME */
+#game {
+    display: none;
+    margin-top: 20px;
 }
 
 #palabra {
-    font-size: 30px;
-    letter-spacing: 5px;
+    font-size: 35px;
+    letter-spacing: 8px;
     margin: 20px;
 }
 
-canvas {
-    background: white;
-    margin-top: 10px;
+button {
+    padding: 10px;
+    border-radius: 8px;
+    margin: 5px;
+    cursor: pointer;
+}
+
+#letras button {
+    width: 35px;
+}
+
+/* PARTÍCULAS */
+#particles-js {
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    z-index: -1;
 }
 </style>
 </head>
 
 <body>
 
-<h1>🎓 Ahorcado Académico PRO</h1>
+<div id="particles-js"></div>
+
+<!-- PORTADA -->
+<div id="portada">
+    <h1 class="titulo">🎓 Ahorcado YachayTECH</h1>
+    <p class="subtitulo">Pon a prueba tu conocimiento</p>
+    <button id="btnStart" onclick="entrarJuego()">🚀 Comenzar</button>
+</div>
+
+<h1>🎓 Ahorcado YachayTECH</h1>
 
 <div id="menu"></div>
 
-<div id="game" style="display:none;">
+<div id="game">
     <h2 id="categoria"></h2>
-    <canvas id="canvas" width="200" height="250"></canvas>
+    <canvas id="canvas" width="220" height="260"></canvas>
     <div id="palabra"></div>
     <div id="info"></div>
+
     <button onclick="darPista()">💡 Pista</button>
+    <button onclick="volverMenu()">⬅ Volver</button>
+
     <div id="letras"></div>
-    <br>
-    <button onclick="volverMenu()">Volver</button>
 </div>
+
+<!-- SONIDO -->
+<audio id="winSound" src="https://www.soundjay.com/misc/sounds/bell-ringing-05.mp3"></audio>
+<audio id="goodSound" src="https://www.soundjay.com/buttons/sounds/button-3.mp3"></audio>
+<audio id="badSound" src="https://www.soundjay.com/buttons/sounds/button-10.mp3"></audio>
+
+<script src="https://cdn.jsdelivr.net/npm/particles.js"></script>
 
 <script>
 const data = {
-    "Física": ["energia","fuerza","onda","campo","relatividad","cuantica","vector","masa","frecuencia","inercia"],
+    "Física": ["energia","fuerza","onda","campo","relatividad","cuantica","vector","masa","frecuencia","inercia","entropia","gravedad"],
     "Matemáticas": ["derivada","integral","limite","matriz","vector","ecuacion","teorema","logaritmo","serie","gradiente"],
     "Biología": ["celula","adn","mitosis","ecosistema","enzima","organismo","evolucion","mutacion","tejido","bacteria"],
-    "Química": ["atomo","molecula","reaccion","ion","valencia","entalpia","entropia","orbital","redox","polimero"]
+    "Química": ["atomo","molecula","reaccion","ion","valencia","entalpia","entropia","orbital","redox","polimero"],
+    "Programación": ["python","variable","funcion","bucle","array","objeto","clase","algoritmo","debug"],
+    "Ingeniería": ["estructura","sistema","circuito","control","sensor","motor","energia","material"]
 };
 
 let palabra = "";
@@ -73,32 +171,40 @@ let puntaje = 0;
 let nivel = 1;
 let categoriaActual = "";
 
-const menu = document.getElementById("menu");
-const game = document.getElementById("game");
+// PORTADA
+function entrarJuego() {
+    document.getElementById("portada").style.display = "none";
+    document.getElementById("menu").style.display = "flex";
+}
 
+// MENU
 function crearMenu() {
+    const menu = document.getElementById("menu");
     for (let cat in data) {
-        let btn = document.createElement("button");
-        btn.innerText = cat;
-        btn.onclick = () => iniciarJuego(cat);
-        menu.appendChild(btn);
+        let card = document.createElement("div");
+        card.className = "card";
+        card.innerText = cat;
+        card.onclick = () => iniciarJuego(cat);
+        menu.appendChild(card);
     }
 }
 
+// JUEGO
 function iniciarJuego(cat) {
     categoriaActual = cat;
     palabra = elegirPalabra(data[cat]);
     letras = [];
     intentos = 6;
 
-    menu.style.display = "none";
-    game.style.display = "block";
+    document.getElementById("menu").style.display = "none";
+    document.getElementById("game").style.display = "block";
 
     document.getElementById("categoria").innerText = cat;
     crearTeclado();
     actualizar();
 }
 
+// DIFICULTAD
 function elegirPalabra(lista) {
     if (nivel <= 2) lista = lista.filter(p => p.length <= 6);
     else if (nivel <= 4) lista = lista.filter(p => p.length <= 9);
@@ -107,51 +213,72 @@ function elegirPalabra(lista) {
     return lista[Math.floor(Math.random() * lista.length)];
 }
 
+// TECLADO
 function crearTeclado() {
     const cont = document.getElementById("letras");
     cont.innerHTML = "";
+
     for (let i = 97; i <= 122; i++) {
         let l = String.fromCharCode(i);
         let b = document.createElement("button");
         b.innerText = l;
-        b.onclick = () => intentar(l, b);
+
+        b.onclick = () => {
+            b.disabled = true;
+            intentar(l);
+        };
+
         cont.appendChild(b);
     }
 }
 
-function intentar(l, btn) {
-    btn.disabled = true;
+// INTENTOS
+function intentar(l) {
     letras.push(l);
 
-    if (!palabra.includes(l)) intentos--;
+    if (!palabra.includes(l)) {
+        intentos--;
+        document.getElementById("badSound").play();
+    } else {
+        document.getElementById("goodSound").play();
+    }
 
     actualizar();
     comprobar();
 }
 
+// ACTUALIZAR
 function actualizar() {
     let mostrada = palabra.split("").map(l => letras.includes(l) ? l : "_").join(" ");
     document.getElementById("palabra").innerText = mostrada;
+
     document.getElementById("info").innerText =
         `Intentos: ${intentos} | Nivel: ${nivel} | Puntaje: ${puntaje}`;
 
     dibujar();
 }
 
+// GANAR/PERDER
 function comprobar() {
     if (!document.getElementById("palabra").innerText.includes("_")) {
+        document.getElementById("winSound").play();
         puntaje += palabra.length * 10;
         nivel++;
-        alert("🎉 Ganaste!");
-        iniciarJuego(categoriaActual);
+        setTimeout(() => {
+            alert("🎉 Ganaste!");
+            iniciarJuego(categoriaActual);
+        }, 300);
     }
 
     if (intentos === 0) {
-        alert("💀 Perdiste! Era: " + palabra);
-        volverMenu();
+        setTimeout(() => {
+            alert("💀 Perdiste: " + palabra);
+            volverMenu();
+        }, 300);
     }
 }
 
+// PISTA
 function darPista() {
     for (let l of palabra) {
         if (!letras.includes(l)) {
@@ -162,27 +289,41 @@ function darPista() {
     }
 }
 
+// VOLVER
 function volverMenu() {
-    game.style.display = "none";
-    menu.style.display = "block";
+    document.getElementById("game").style.display = "none";
+    document.getElementById("menu").style.display = "flex";
 }
 
+// DIBUJO
 function dibujar() {
     const c = document.getElementById("canvas");
     const ctx = c.getContext("2d");
-    ctx.clearRect(0,0,200,250);
+    ctx.clearRect(0,0,220,260);
+
+    ctx.lineWidth = 4;
 
     ctx.beginPath();
-    ctx.moveTo(10,240); ctx.lineTo(150,240);
+    ctx.moveTo(20,240); ctx.lineTo(180,240);
     if (intentos < 6) ctx.moveTo(40,240), ctx.lineTo(40,20);
-    if (intentos < 5) ctx.lineTo(100,20);
-    if (intentos < 4) ctx.lineTo(100,40);
-    if (intentos < 3) ctx.arc(100,60,20,0,Math.PI*2);
-    if (intentos < 2) ctx.moveTo(100,80), ctx.lineTo(100,140);
-    if (intentos < 1) ctx.moveTo(100,100), ctx.lineTo(80,120);
+    if (intentos < 5) ctx.lineTo(120,20);
+    if (intentos < 4) ctx.lineTo(120,50);
+    if (intentos < 3) ctx.arc(120,70,20,0,Math.PI*2);
+    if (intentos < 2) ctx.moveTo(120,90), ctx.lineTo(120,150);
+    if (intentos < 1) ctx.moveTo(120,110), ctx.lineTo(90,140);
 
     ctx.stroke();
 }
+
+// PARTICULAS
+particlesJS("particles-js", {
+  particles: {
+    number: { value: 60 },
+    size: { value: 3 },
+    move: { speed: 1 },
+    line_linked: { enable: true }
+  }
+});
 
 crearMenu();
 </script>
